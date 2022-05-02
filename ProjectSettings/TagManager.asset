@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Pavimento
+  - Enemies
+  - Mobile
+  - Scudo
+  - Collectible_Item
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - AreaEffector
+  - Sfondo
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - Pavimento
+  - Mobilia
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - Enemies
+  - Player
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Edificio
+    uniqueID: 3042949617
+    locked: 0
+  - name: Mobilia
+    uniqueID: 72567931
+    locked: 0
+  - name: Sfondo
+    uniqueID: 3364143189
+    locked: 0
+  - name: Player
+    uniqueID: 4159815139
+    locked: 0
+  - name: Oggetti-consumabili
+    uniqueID: 1573733537
+    locked: 0
