@@ -360,7 +360,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.32}
+    oldSize: {x: 0.16, y: 0.3}
     newSize: {x: 0.22, y: 0.38}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -410,7 +410,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: -4624417513888408455, guid: f57524ff6cd538a4e85274a61eb22921,
+  m_Sprite: {fileID: 5482808030711954005, guid: 7ba98c6352ddbf9448a661740ffd4fed,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -475,6 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33b5bdb12b288b042a9021c0c500d0eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prova: {fileID: 0}
   papas: {fileID: 1800846225}
   controller: {fileID: 144316292}
   salute: 100
@@ -760,7 +761,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 0.5
   m_LightVolumeIntensity: 0
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 00000000f1b95fb57b4c530455c084c8e3bdf1f7a144cd5d
@@ -4369,6 +4370,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ApplyToSortingLayers.Array.data[1]
       value: 1573733537
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226637727685739028, guid: 5d566caed7fa89748907d97a171a06e4,
+        type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226637727685739028, guid: 5d566caed7fa89748907d97a171a06e4,
+        type: 3}
+      propertyPath: m_BodyType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6226637727685739028, guid: 5d566caed7fa89748907d97a171a06e4,
+        type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6226637727733732841, guid: 5d566caed7fa89748907d97a171a06e4,
         type: 3}
