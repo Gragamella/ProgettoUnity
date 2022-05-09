@@ -71,9 +71,8 @@ public class Player : MonoBehaviour
        
         
             if (Input.GetKeyDown("s") && !controller.m_Grounded)
-            {
-                            
-                down = true;                 
+            {                
+                down = true;                     
             }
 
             if (Input.GetKeyDown("k") && controller.m_Grounded)

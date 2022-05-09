@@ -71,10 +71,14 @@ public class playerMovement : MonoBehaviour
             }
             else
             {
-                crouch = true;
+                if (playerAnim.GetBool("crouchAttack") == false)
+                {
+                    crouch = true;
+                }                
             }              
         }
-        else if (Input.GetButtonUp("Crouch"))
+        
+        if (Input.GetButtonUp("Crouch"))
         {
             crouch = false;
         }
