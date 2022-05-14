@@ -92,14 +92,14 @@ public class Player : MonoBehaviour
         {
             if (isGrounded)
             {
-                isCrouchPressed = true;
+                isCrouch = true;
             }
         }
         else if (Input.GetKeyUp("s"))
         {
             if (isGrounded)
             {
-                isCrouchPressed = false;
+                isCrouch = false;
             }
         }       
 
@@ -128,11 +128,15 @@ public class Player : MonoBehaviour
         if (hit.collider != null)
         {
             isGrounded = true;
-            isJump = false;
         }
         else
         {
             isGrounded = false;
+        }
+
+        if (isGrounded)
+        {
+            isJump = false;
         }
 
         //CALCOLO INPUT VELOCITA
@@ -167,19 +171,14 @@ public class Player : MonoBehaviour
         }
 
         //CROUCH
-        if (isCrouchPressed)
-        {        
-            if (!isCrouch)
-            {
-                isCrouch = true;
+               
+            if (isCrouch && !isAttacking)
+            {               
                 CambiaStatoAnimazione(PLAYER_CROUCH);
                 vel.x = 0;
             }
-        }
-        else
-        {
-            isCrouch = false;
-        }     
+        
+           
 
         //SALTO
         if(isJumpPressed && isGrounded)
@@ -194,12 +193,12 @@ public class Player : MonoBehaviour
             }         
         }
 
-        rgb2DPlayer.velocity = vel;
+       
 
 
         //ATTACCO
         if (isAttackPressed)
-        {
+        {           
             isAttackPressed = false;
 
             if (!isAttacking)
@@ -211,21 +210,37 @@ public class Player : MonoBehaviour
                     if (isCrouch)
                     {
                         CambiaStatoAnimazione(PLAYER_CROUCH_ATTACK);
-                        isAttacking = false;
-                    }
-                    else if(isJump)
-                    {
-                        CambiaStatoAnimazione(PLAYER_ATTACK);
-                        Invoke("AttaccoCompleto", 0.6f);
-                    }
+                      
+                    }                  
                     else
                     {
                         CambiaStatoAnimazione(PLAYER_ATTACK);
-                        Invoke("AttaccoCompleto", 0.6f);
-                    }           
+                        
+                    }
+
+                    Invoke("AttaccoCompleto", 1f);
+
+                }
+                else
+                {
+                    CambiaStatoAnimazione(PLAYER_ATTACK);
+                    Invoke("AttaccoCompleto", 1f);
                 }              
             }
         }
+
+        if (isCrouch && !isAttacking)
+        {           
+            vel.x = 0;
+        }
+
+        if (isAttacking && !isJump)
+        {
+            vel.x = 0;
+        }
+
+
+        rgb2DPlayer.velocity = vel;
 
     }
 
