@@ -4,20 +4,28 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
-    public Transform prova;
     public GameObject papas;
 
-    public CharacterController2D controller;
+    private Animator playerAnim;
+    private Rigidbody2D rgb2DPlayer;
 
     public int salute = 100;
     public int attacco = 20;
+    public float velocita = 5f;
+    public float jumpForce = 400f;
 
-    public Enemy nemico;
-    Collider2D colliderNemico;
+    private int groundMask;
 
-    public Animator playerAnim;
-    public GameObject player;
+    private float xAxis;
+    private float yAxis;
+    private bool isGrounded;
+    private bool isJump;
+    private bool isJumpPressed;
+    private bool isCrouch;
+    private bool isCrouchPressed;
+    private bool isAttacking;
+    private bool isAttackPressed;
+    private string currentAnimation;
 
     public bool down = false;
 
@@ -28,18 +36,31 @@ public class Player : MonoBehaviour
 
     public float crouchAttackRange;
     public float attackRange;
-
     public float force;
+
+    string PLAYER_IDLE = "Player_idle";
+    string PLAYER_WALKING = "Player_walking";
+    string PLAYER_CROUCH = "Player_crouch";
+    string PLAYER_AIR = "Player_air";
+    string PLAYER_ATTACK = "Player_attack";
+    string PLAYER_CROUCH_ATTACK = "Player_crouch_attack";
+    string PLAYER_AIR_ATTACK = "Player_air_attack";
 
     public Inventory inventario;
 
     [SerializeField] private InterfacciaInventario interfacciaInventario;
-    
 
+    public Enemy nemico;
+    Collider2D colliderNemico;
 
     // Start is called before the first frame update
     void Start()
     {
+        playerAnim = GetComponent<Animator>();
+        rgb2DPlayer = GetComponent<Rigidbody2D>();
+        groundMask = 1 << LayerMask.NameToLayer("Pavimento");
+
+
         ItemWorld.SpawnItemWorld(new Vector3(7, 2), new Items { tipoOggetto = Items.ItemType.PozioneSalute, quantità = 2 });
         ItemWorld.SpawnItemWorld(new Vector3(10, 2), new Items { tipoOggetto = Items.ItemType.Monete, quantità = 1 });
         ItemWorld.SpawnItemWorld(new Vector3(12, 2), new Items { tipoOggetto = Items.ItemType.PozioneVelocita, quantità = 1 });
@@ -55,6 +76,34 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        xAxis = Input.GetAxisRaw("Horizontal");
+
+        if (Input.GetKeyDown(KeyCode.Space) && !isJump)
+        {
+            isJumpPressed = true;
+        }
+
+        if (Input.GetKeyDown("k"))
+        {
+            isAttackPressed = true;
+        }
+
+        if (Input.GetKeyDown("s"))
+        {
+            if (isGrounded)
+            {
+                isCrouchPressed = true;
+            }
+        }
+        else if (Input.GetKeyUp("s"))
+        {
+            if (isGrounded)
+            {
+                isCrouchPressed = false;
+            }
+        }       
+
+
         if (Input.GetKeyDown("i"))
         {
             if (interfacciaInventario.gameObject.activeInHierarchy)
@@ -67,47 +116,117 @@ public class Player : MonoBehaviour
                 interfacciaInventario.RefreshInventoryItems();
             }
         }
-
        
-        
-            if (Input.GetKeyDown("s") && !controller.m_Grounded)
-            {                
-                down = true;                     
-            }
 
-            if (Input.GetKeyDown("k") && controller.m_Grounded)
+    }
+
+    private void FixedUpdate()
+    {
+        //GROUNDED
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.2f, groundMask);
+
+        if (hit.collider != null)
+        {
+            isGrounded = true;
+            isJump = false;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+
+        //CALCOLO INPUT VELOCITA
+        Vector2 vel = new Vector2(0, rgb2DPlayer.velocity.y);
+
+        if (xAxis < 0)
+        {
+            vel.x = -velocita;
+            transform.localScale = new Vector2(-1, 1);
+        }
+        else if(xAxis > 0)
+        {
+            vel.x = velocita;
+            transform.localScale = new Vector2(1, 1);
+        }
+        else
+        {
+            vel.x = 0;
+        }
+
+        //IDLE-MOVING
+        if (isGrounded && !isAttacking && !isCrouch)
+        {
+            if (xAxis != 0)
             {
-                if (gameObject.GetComponent<playerMovement>().crouch)
-                {
-                    playerAnim.SetBool("crouchAttack", true);
-                }
-                else if (Input.GetAxisRaw("Vertical") > 0f)
-                {
-                    playerAnim.SetBool("Attack-UpThrust-Air", true);
-                }
-                else
-                {
-                    playerAnim.SetBool("Attack", true);
-                }
-
-
+                CambiaStatoAnimazione(PLAYER_WALKING);
             }
-
-            if (Input.GetKeyDown("k") && !controller.m_Grounded)
+            else
             {
-                if (Input.GetAxisRaw("Vertical") > 0f)
-                {
-                    playerAnim.SetBool("Attack-UpThrust-Air", true);
-                }
-                else if (down)
-                {
-                    playerAnim.SetBool("Attack-DownThrust-Air", true);
-                }
-                else
-                {
-                    playerAnim.SetBool("Attack", true);
-                }
+                CambiaStatoAnimazione(PLAYER_IDLE);
             }
+        }
+
+        //CROUCH
+        if (isCrouchPressed)
+        {        
+            if (!isCrouch)
+            {
+                isCrouch = true;
+                CambiaStatoAnimazione(PLAYER_CROUCH);
+                vel.x = 0;
+            }
+        }
+        else
+        {
+            isCrouch = false;
+        }     
+
+        //SALTO
+        if(isJumpPressed && isGrounded)
+        {
+            isJumpPressed = false;
+
+            if (!isJump)
+            {
+                isJump = true;
+                rgb2DPlayer.AddForce(new Vector2(0, jumpForce));             
+                CambiaStatoAnimazione(PLAYER_AIR);
+            }         
+        }
+
+        rgb2DPlayer.velocity = vel;
+
+
+        //ATTACCO
+        if (isAttackPressed)
+        {
+            isAttackPressed = false;
+
+            if (!isAttacking)
+            {
+                isAttacking = true;
+
+                if (isGrounded)
+                {
+                    if (isCrouch)
+                    {
+                        CambiaStatoAnimazione(PLAYER_CROUCH_ATTACK);
+                        isAttacking = false;
+                    }
+                    else if(isJump)
+                    {
+                        CambiaStatoAnimazione(PLAYER_ATTACK);
+                        Invoke("AttaccoCompleto", 0.6f);
+                    }
+                    else
+                    {
+                        CambiaStatoAnimazione(PLAYER_ATTACK);
+                        Invoke("AttaccoCompleto", 0.6f);
+                    }           
+                }              
+            }
+        }
+
     }
 
     public void DownAttack()
@@ -314,16 +433,19 @@ public class Player : MonoBehaviour
     }
 
 
-    void StopAttacking()
+    void AttaccoCompleto()
     {
-       playerAnim.SetBool("Attack", false);
-       playerAnim.SetBool("crouchAttack", false);
-       playerAnim.SetBool("Attack-UpThrust-Air", false);
+        isAttacking = false;
     }
 
     public InterfacciaInventario getIntInventario()
     {
         return this.interfacciaInventario; 
     
+    }
+
+    void CambiaStatoAnimazione(string animazione)
+    {
+        playerAnim.Play(animazione);
     }
 }

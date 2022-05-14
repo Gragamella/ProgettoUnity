@@ -328,8 +328,6 @@ GameObject:
   - component: {fileID: 144316287}
   - component: {fileID: 144316286}
   - component: {fileID: 144316289}
-  - component: {fileID: 144316293}
-  - component: {fileID: 144316292}
   - component: {fileID: 144316288}
   - component: {fileID: 144316285}
   - component: {fileID: 144316291}
@@ -475,14 +473,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33b5bdb12b288b042a9021c0c500d0eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prova: {fileID: 0}
   papas: {fileID: 1800846225}
-  controller: {fileID: 144316292}
   salute: 100
   attacco: 20
-  nemico: {fileID: 0}
-  playerAnim: {fileID: 144316290}
-  player: {fileID: 144316284}
+  velocita: 2
+  jumpForce: 200
   down: 0
   swordAttPos: {fileID: 1847650970}
   UpswordAttPos: {fileID: 302612635}
@@ -492,6 +487,7 @@ MonoBehaviour:
   attackRange: 0.5
   force: 10
   interfacciaInventario: {fileID: 167947981}
+  nemico: {fileID: 0}
 --- !u!95 &144316290
 Animator:
   serializedVersion: 3
@@ -527,75 +523,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.08}
   serializedVersion: 2
   m_Radius: 0.082500145
---- !u!114 &144316292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144316284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d911607cb81b3d48b0277fc8af513d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_JumpForce: 180
-  m_CrouchSpeed: 0.36
-  m_MovementSmoothing: 0.05
-  m_AirControl: 1
-  m_WhatIsGround:
-    serializedVersion: 2
-    m_Bits: 1076887552
-  m_GroundCheck: {fileID: 1110721927}
-  m_CeilingCheck: {fileID: 1724136890}
-  m_CrouchDisableCollider: {fileID: 144316285}
-  m_Grounded: 0
-  playerAnim: {fileID: 144316290}
-  OnLandEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 144316293}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: OnLandEvent
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnCrouchEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 144316293}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: OnCrouchEvent
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &144316293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144316284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4381100149315d54bafa9540f549d991, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 144316292}
-  crouch: 0
-  playerAnim: {fileID: 144316290}
 --- !u!232 &144316294
 DistanceJoint2D:
   m_ObjectHideFlags: 0
