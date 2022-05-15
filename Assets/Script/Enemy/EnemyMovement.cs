@@ -217,8 +217,12 @@ public class EnemyMovement : MonoBehaviour
             }
         }
 
-        ColpoDiSpada(count, oggettoColpito, objectPos);
-        oggettoColpito = null;
+        if(oggettoColpito != null)
+        {
+            ColpoDiSpada(count, oggettoColpito, objectPos);
+            oggettoColpito = null;
+        }       
+       
     }
 
     private void OnDrawGizmosSelected()

@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public GameObject papas;
+    private Weapon arma;
 
     private Animator playerAnim;
     private Rigidbody2D rgb2DPlayer;
 
-    public int salute = 100;
-    public int attacco = 20;
+    public int salute;
+    public int saluteMassima;
+    public int attacco;
+    public int livello;
     public float velocita = 5f;
+    public float peso;
+    public float pesoMassimo;
     public float jumpForce = 400f;
+
+    public int forza;
+    public int destrezza;
+    public int costituzione;
+    public int fortuna;
 
     private int groundMask;
 
@@ -59,7 +68,15 @@ public class Player : MonoBehaviour
         playerAnim = GetComponent<Animator>();
         rgb2DPlayer = GetComponent<Rigidbody2D>();
         groundMask = 1 << LayerMask.NameToLayer("Pavimento");
+        arma = GetComponent<Weapon>();
 
+        livello = 1;
+        forza = 5;
+        destrezza = 5;
+        costituzione = 5;
+        fortuna = 5;
+        saluteMassima = costituzione * 10;
+        salute = saluteMassima;
 
         ItemWorld.SpawnItemWorld(new Vector3(7, 2), new Items { tipoOggetto = Items.ItemType.PozioneSalute, quantità = 2 });
         ItemWorld.SpawnItemWorld(new Vector3(10, 2), new Items { tipoOggetto = Items.ItemType.Monete, quantità = 1 });
@@ -76,6 +93,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        attacco = forza * 2 + arma.attPowerCalcolato;
+       
+
         xAxis = Input.GetAxisRaw("Horizontal");
 
         if (Input.GetKeyDown(KeyCode.Space) && !isJump)
@@ -278,7 +299,6 @@ public class Player : MonoBehaviour
         }
 
         ColpoDiSpada(count, colliderNemico, playerPos);
-        colliderNemico = papas.GetComponent<Collider2D>();
     }
 
 
@@ -315,7 +335,6 @@ public class Player : MonoBehaviour
         }
 
         ColpoDiSpada(count, colliderNemico, playerPos);
-        colliderNemico = papas.GetComponent<Collider2D>();
     }
 
     public void Attack()
@@ -323,7 +342,7 @@ public class Player : MonoBehaviour
         Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
         int count = 0;
 
-        Collider2D[] swordStrike = Physics2D.OverlapBoxAll(swordAttPos.position, swordAttPos.localScale, Vector2.Angle(Vector2.zero, transform.position));
+        Collider2D[] swordStrike = Physics2D.OverlapBoxAll(swordAttPos.position, swordAttPos.localScale * attackRange, Vector2.Angle(Vector2.zero, transform.position));
         foreach (Collider2D collider in swordStrike)
         {
             if(collider.tag == "Scudo" && collider.gameObject != this.gameObject)
@@ -350,8 +369,12 @@ public class Player : MonoBehaviour
                     }
         }
 
-        ColpoDiSpada(count, colliderNemico, playerPos);
-        colliderNemico = papas.GetComponent<Collider2D>();
+        if(colliderNemico != null)
+        {
+            ColpoDiSpada(count, colliderNemico, playerPos);
+            colliderNemico = null;
+        }
+       
     }
 
     public void CrouchAttack()
@@ -359,7 +382,7 @@ public class Player : MonoBehaviour
         Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
         int count = 0;
 
-        Collider2D[] swordStrike = Physics2D.OverlapBoxAll(crouchAttPos.position, crouchAttPos.localScale, Vector2.Angle(Vector2.zero, transform.position));
+        Collider2D[] swordStrike = Physics2D.OverlapBoxAll(crouchAttPos.position, crouchAttPos.localScale * crouchAttackRange, Vector2.Angle(Vector2.zero, transform.position));
         foreach (Collider2D collider in swordStrike)
         {
             if (collider.tag == "Scudo" && collider.gameObject != this.gameObject)
@@ -386,8 +409,11 @@ public class Player : MonoBehaviour
             }
         }
 
-        ColpoDiSpada(count, colliderNemico, playerPos);
-        colliderNemico = papas.GetComponent<Collider2D>();
+        if (colliderNemico != null)
+        {
+            ColpoDiSpada(count, colliderNemico, playerPos);
+            colliderNemico = null;
+        }
     }
 
 
@@ -436,7 +462,7 @@ public class Player : MonoBehaviour
                 oggetto.attachedRigidbody.AddForce(new Vector3(1.5f, 0, 0) * force, ForceMode2D.Impulse);
                 oggetto.attachedRigidbody.AddTorque(-10);
             }
-        }
+        }     
     }
 
     private void OnDrawGizmosSelected()
