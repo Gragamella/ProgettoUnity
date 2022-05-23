@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private Weapon arma;
 
+    public GameObject arma;
+
+    public SpadaManager spadaManagerSlot;
+
+    private Dictionary<string, string> dictWeaponAnim;
+
+    private Animator spadaAnim;
     private Animator playerAnim;
     private Rigidbody2D rgb2DPlayer;
 
@@ -42,6 +48,8 @@ public class Player : MonoBehaviour
     public Transform UpswordAttPos;
     public Transform DownswordAttPos;
     public Transform crouchAttPos;
+    
+    public Collider2D raccogli_oggetti;
 
     public float crouchAttackRange;
     public float attackRange;
@@ -55,6 +63,9 @@ public class Player : MonoBehaviour
     string PLAYER_CROUCH_ATTACK = "Player_crouch_attack";
     string PLAYER_AIR_ATTACK = "Player_air_attack";
 
+    string WEAPON_SPADA_IDLE = "spada_Idle";
+    string WEAPON_SPADA_WALKING = "spada_walking";
+
     public Inventory inventario;
 
     [SerializeField] private InterfacciaInventario interfacciaInventario;
@@ -65,11 +76,19 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+       
+        dictWeaponAnim = spadaManagerSlot.dictSpadaAnim;
+
+        if (gameObject.GetComponent<Collider2D>().isTrigger)
+        {
+            raccogli_oggetti = gameObject.GetComponent<Collider2D>();
+        }
+      
         playerAnim = GetComponent<Animator>();
         rgb2DPlayer = GetComponent<Rigidbody2D>();
         groundMask = 1 << LayerMask.NameToLayer("Pavimento");
-        arma = GetComponent<Weapon>();
 
+        attacco = 10;
         livello = 1;
         forza = 5;
         destrezza = 5;
@@ -78,13 +97,15 @@ public class Player : MonoBehaviour
         saluteMassima = costituzione * 10;
         salute = saluteMassima;
 
-        ItemWorld.SpawnItemWorld(new Vector3(7, 2), new Items { tipoOggetto = Items.ItemType.PozioneSalute, quantità = 2 });
-        ItemWorld.SpawnItemWorld(new Vector3(10, 2), new Items { tipoOggetto = Items.ItemType.Monete, quantità = 1 });
-        ItemWorld.SpawnItemWorld(new Vector3(12, 2), new Items { tipoOggetto = Items.ItemType.PozioneVelocita, quantità = 1 });
+       // ItemWorld.SpawnItemWorld(new Vector3(7, 2), new Items { tipoOggetto = Items.ItemType.PozioneSalute, quantità = 2 });
+       // ItemWorld.SpawnItemWorld(new Vector3(10, 2), new Items { tipoOggetto = Items.ItemType.Monete, quantità = 1 });
+       // ItemWorld.SpawnItemWorld(new Vector3(12, 2), new Items { tipoOggetto = Items.ItemType.PozioneVelocita, quantità = 1 });
     }
 
     private void Awake()
     {
+        spadaManagerSlot = GetComponentInChildren<SpadaManager>();
+        spadaAnim = spadaManagerSlot.gameObject.GetComponent<Animator>();
         inventario = new Inventory();
         interfacciaInventario.SetInventario(inventario);
 
@@ -93,10 +114,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        attacco = forza * 2 + arma.attPowerCalcolato;
        
-
+           
         xAxis = Input.GetAxisRaw("Horizontal");
 
         if (Input.GetKeyDown(KeyCode.Space) && !isJump)
@@ -143,6 +162,21 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (arma != null)
+        {
+            attacco = forza * 2 + arma.GetComponent<Spada>().attPowerCalcolato;
+            // spadaManagerSlot.gameObject.SetActive(true);
+            if (spadaManagerSlot.sprite == null && arma.GetComponent<Spada>().Image != null)
+            {
+                spadaManagerSlot.sprite = arma.GetComponent<Spada>().Image;
+            }
+        }
+
+        // else
+        // {
+        //     spadaManagerSlot.gameObject.SetActive(false);
+        // }
+
         //GROUNDED
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.2f, groundMask);
 
@@ -184,10 +218,19 @@ public class Player : MonoBehaviour
             if (xAxis != 0)
             {
                 CambiaStatoAnimazione(PLAYER_WALKING);
+                if (arma != null)
+                {
+                    CambiaStatoAnimazioneBetter(dictWeaponAnim["walking"]);
+                }
             }
             else
             {
                 CambiaStatoAnimazione(PLAYER_IDLE);
+                if(arma != null)
+                {
+                    CambiaStatoAnimazioneBetter(dictWeaponAnim["idle"]);
+                }
+               
             }
         }
 
@@ -488,5 +531,10 @@ public class Player : MonoBehaviour
     void CambiaStatoAnimazione(string animazione)
     {
         playerAnim.Play(animazione);
+    }
+
+    void CambiaStatoAnimazioneBetter(string animazione)
+    {
+        spadaAnim.Play(animazione);
     }
 }

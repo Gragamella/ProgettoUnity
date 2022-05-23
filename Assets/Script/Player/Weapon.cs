@@ -21,22 +21,12 @@ public class Weapon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GetComponent<Player>();
-        attPower = 0;
-        attPowerCalcolato = 0;
+        player = FindObjectOfType<Player>();        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (affinità.Equals(FORZA))
-        {
-            attPowerCalcolato = attPower + player.forza * valoreAffinità;
-        }
-
-        if (affinità.Equals(DESTREZZA))
-        {
-            attPowerCalcolato = attPower + player.destrezza * valoreAffinità;
-        }
+      
     }
 }
