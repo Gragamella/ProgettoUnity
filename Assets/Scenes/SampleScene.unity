@@ -2709,7 +2709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6539060be9416144fb3333ba977feb6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: b375c00e6bb6bd14793e0d6b4bcf8809, type: 3}
 --- !u!1 &1269641417
 GameObject:
   m_ObjectHideFlags: 0

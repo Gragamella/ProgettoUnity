@@ -11,14 +11,16 @@ public class SpadaManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dictSpadaAnim = new Dictionary<string, string>();
-
-        dictSpadaAnim.Add("idle", "spada_Idle");
-        dictSpadaAnim.Add("walking", "spada_walking");
+      
     }
 
     private void Awake()
     {
+        dictSpadaAnim = new Dictionary<string, string>();
+
+        dictSpadaAnim.Add("idle", "spada_Idle");
+        dictSpadaAnim.Add("walking", "spada_walking");
+
         sprite = null;
     }
 
