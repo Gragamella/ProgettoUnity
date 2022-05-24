@@ -166,9 +166,9 @@ public class Player : MonoBehaviour
         {
             attacco = forza * 2 + arma.GetComponent<Spada>().attPowerCalcolato;
             // spadaManagerSlot.gameObject.SetActive(true);
-            if (spadaManagerSlot.sprite == null && arma.GetComponent<Spada>().Image != null)
+            if (spadaManagerSlot.gameObject.GetComponent<SpriteRenderer>().sprite == null && arma.GetComponent<Spada>().Image != null)
             {
-                spadaManagerSlot.sprite = arma.GetComponent<Spada>().Image;
+                spadaManagerSlot.gameObject.GetComponent<SpriteRenderer>().sprite = arma.GetComponent<Spada>().Image;
             }
         }
 
