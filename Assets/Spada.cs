@@ -15,7 +15,7 @@ public class Spada : Weapon
         tipo = "spada";
         valoreAffinità = 1;
         affinità = FORZA;
-        attPower = 5;
+        //attPower = 5;
 
         if (affinità.Equals(FORZA))
         {

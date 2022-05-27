@@ -1,22 +1,16 @@
 fileFormatVersion: 2
-guid: d9ff6d99109ea4f43874904daa7b7a0d
+guid: dc1e32106e6a109429c3514231959a5e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8829981286241361538
-    second: NES - Zelda 2 The Adventure of Link - Palace Enemies_0
+      213: -1847760979044231001
+    second: player-crouch-attack_0
   - first:
-      213: 7286206408912112139
-    second: NES - Zelda 2 The Adventure of Link - Palace Enemies_1
+      213: -6684527193245946903
+    second: player-crouch-attack_1
   - first:
-      213: -506042234187071896
-    second: NES - Zelda 2 The Adventure of Link - Palace Enemies_2
-  - first:
-      213: -4762706196788192738
-    second: NES - Zelda 2 The Adventure of Link - Palace Enemies_3
-  - first:
-      213: -6658004558528592904
-    second: NES - Zelda 2 The Adventure of Link - Palace Enemies_4
+      213: -619176036740040465
+    second: player-crouch-attack_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -76,7 +70,7 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -103,42 +97,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
     buildTarget: Windows Store Apps
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -154,106 +112,64 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: NES - Zelda 2 The Adventure of Link - Palace Enemies_0
+      name: player-crouch-attack_0
       rect:
         serializedVersion: 2
-        x: 499
-        y: 528
-        width: 16
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 17
+        y: 3
+        width: 24
+        height: 26
+      alignment: 9
+      pivot: {x: 0.55543894, y: 0.58080167}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6580f4e375f9d044197c838abe0b3fe8
-      internalID: 8829981286241361538
+      spriteID: 7a89d3eed2f6b56e0800000000000000
+      internalID: -1847760979044231001
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NES - Zelda 2 The Adventure of Link - Palace Enemies_1
+      name: player-crouch-attack_1
       rect:
         serializedVersion: 2
-        x: 516
-        y: 528
-        width: 16
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 50
+        y: 3
+        width: 18
+        height: 26
+      alignment: 9
+      pivot: {x: 0.57002807, y: 0.57272154}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a4ea65d876c8b204ca4401ec48155cc5
-      internalID: 7286206408912112139
+      spriteID: 9ebe2231fe9cb33a0800000000000000
+      internalID: -6684527193245946903
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NES - Zelda 2 The Adventure of Link - Palace Enemies_2
+      name: player-crouch-attack_2
       rect:
         serializedVersion: 2
-        x: 533
-        y: 528
-        width: 15
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 78
+        y: 3
+        width: 24
+        height: 26
+      alignment: 9
+      pivot: {x: 0.5291786, y: 0.5700282}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0f444e75a4956e84ca4604b52ae0a56d
-      internalID: -506042234187071896
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NES - Zelda 2 The Adventure of Link - Palace Enemies_3
-      rect:
-        serializedVersion: 2
-        x: 550
-        y: 528
-        width: 15
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 98439023043efa54282738045126f6b2
-      internalID: -4762706196788192738
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NES - Zelda 2 The Adventure of Link - Palace Enemies_4
-      rect:
-        serializedVersion: 2
-        x: 567
-        y: 528
-        width: 30
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8f3c8ff21240a93a0800000000000000
-      internalID: -6658004558528592904
+      spriteID: fe8fca4dcae3867f0800000000000000
+      internalID: -619176036740040465
       vertices: []
       indices: 
       edges: []
@@ -261,7 +177,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: ebba919f28d54a04b9e062d6d8813e80
+    spriteID: 0ced01b804088cd4ebd9e2ae54078c0d
     internalID: 0
     vertices: []
     indices: 

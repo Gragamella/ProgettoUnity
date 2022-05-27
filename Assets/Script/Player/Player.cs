@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public GameObject arma;
 
     public SpadaManager spadaManagerSlot;
+    private PlayerActions playerActions;
 
     private Dictionary<string, string> dictWeaponAnim;
 
@@ -36,7 +37,7 @@ public class Player : MonoBehaviour
     private bool isGrounded;
     private bool isJump;
     private bool isJumpPressed;
-    private bool isCrouch;
+    public bool isCrouch;
     private bool isCrouchPressed;
     private bool isAttacking;
     private bool isAttackPressed;
@@ -44,9 +45,7 @@ public class Player : MonoBehaviour
 
     public bool down = false;
 
-    public Transform swordAttPos;
-    public Transform UpswordAttPos;
-    public Transform DownswordAttPos;
+    public Transform swordAttPos;  
     public Transform crouchAttPos;
     
     public Collider2D raccogli_oggetti;
@@ -63,9 +62,6 @@ public class Player : MonoBehaviour
     string PLAYER_CROUCH_ATTACK = "Player_crouch_attack";
     string PLAYER_AIR_ATTACK = "Player_air_attack";
 
-    string WEAPON_SPADA_IDLE = "spada_Idle";
-    string WEAPON_SPADA_WALKING = "spada_walking";
-
     public Inventory inventario;
 
     [SerializeField] private InterfacciaInventario interfacciaInventario;
@@ -76,7 +72,6 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
         dictWeaponAnim = spadaManagerSlot.dictSpadaAnim;
 
         if (gameObject.GetComponent<Collider2D>().isTrigger)
@@ -97,6 +92,8 @@ public class Player : MonoBehaviour
         saluteMassima = costituzione * 10;
         salute = saluteMassima;
 
+        playerActions = new PlayerActions(this, swordAttPos, crouchAttPos);
+
        // ItemWorld.SpawnItemWorld(new Vector3(7, 2), new Items { tipoOggetto = Items.ItemType.PozioneSalute, quantità = 2 });
        // ItemWorld.SpawnItemWorld(new Vector3(10, 2), new Items { tipoOggetto = Items.ItemType.Monete, quantità = 1 });
        // ItemWorld.SpawnItemWorld(new Vector3(12, 2), new Items { tipoOggetto = Items.ItemType.PozioneVelocita, quantità = 1 });
@@ -113,9 +110,7 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-       
-           
+    {                 
         xAxis = Input.GetAxisRaw("Horizontal");
 
         if (Input.GetKeyDown(KeyCode.Space) && !isJump)
@@ -165,17 +160,12 @@ public class Player : MonoBehaviour
         if (arma != null)
         {
             attacco = forza * 2 + arma.GetComponent<Spada>().attPowerCalcolato;
-            // spadaManagerSlot.gameObject.SetActive(true);
-            if (spadaManagerSlot.gameObject.GetComponent<SpriteRenderer>().sprite == null && arma.GetComponent<Spada>().Image != null)
+            
+            if (arma.GetComponent<Spada>().Image != null && spadaManagerSlot.gameObject.GetComponent<SpriteRenderer>().sprite != arma.GetComponent<Spada>().Image)
             {
                 spadaManagerSlot.gameObject.GetComponent<SpriteRenderer>().sprite = arma.GetComponent<Spada>().Image;
             }
-        }
-
-        // else
-        // {
-        //     spadaManagerSlot.gameObject.SetActive(false);
-        // }
+        }      
 
         //GROUNDED
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.2f, groundMask);
@@ -240,7 +230,11 @@ public class Player : MonoBehaviour
             {               
                 CambiaStatoAnimazione(PLAYER_CROUCH);
                 vel.x = 0;
-            }
+                 if (arma != null)
+                 {
+                     CambiaStatoAnimazioneBetter(dictWeaponAnim["crouch"]);
+                 }
+        }
         
            
 
@@ -254,6 +248,10 @@ public class Player : MonoBehaviour
                 isJump = true;
                 rgb2DPlayer.AddForce(new Vector2(0, jumpForce));             
                 CambiaStatoAnimazione(PLAYER_AIR);
+                if (arma != null)
+                {
+                    CambiaStatoAnimazioneBetter(dictWeaponAnim["air"]);
+                }
             }         
         }
 
@@ -274,22 +272,33 @@ public class Player : MonoBehaviour
                     if (isCrouch)
                     {
                         CambiaStatoAnimazione(PLAYER_CROUCH_ATTACK);
-                      
+                        if (arma != null)
+                        {
+                            CambiaStatoAnimazioneBetter(dictWeaponAnim["crouch_attack"]);                          
+                        }
+                        Invoke("PlayerActions_Attack", 0.4f);
                     }                  
                     else
                     {
                         CambiaStatoAnimazione(PLAYER_ATTACK);
-                        
+                        if (arma != null)
+                        {
+                            CambiaStatoAnimazioneBetter(dictWeaponAnim["attack"]);                          
+                        }
+                        Invoke("PlayerActions_Attack", 0.4f);
                     }
-
-                    Invoke("AttaccoCompleto", 1f);
 
                 }
                 else
                 {
                     CambiaStatoAnimazione(PLAYER_ATTACK);
-                    Invoke("AttaccoCompleto", 1f);
-                }              
+                    if (arma != null)
+                    {
+                        CambiaStatoAnimazioneBetter(dictWeaponAnim["attack"]);                        
+                    }
+                    Invoke("PlayerActions_Attack", 0.4f);                  
+                }
+                Invoke("AttaccoCompleto", 1f);
             }
         }
 
@@ -308,218 +317,21 @@ public class Player : MonoBehaviour
 
     }
 
-    public void DownAttack()
-    {
-        Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        int count = 0;
-
-        Collider2D[] swordStrike = Physics2D.OverlapBoxAll(DownswordAttPos.position, DownswordAttPos.localScale, Vector2.Angle(Vector2.zero, transform.position));
-        foreach (Collider2D collider in swordStrike)
-        {
-            if (collider.tag == "Scudo" && collider.gameObject != this.gameObject)
-            {
-                count++;
-            }
-            else if (collider.tag == "Enemies" && collider.gameObject != this.gameObject)
-            {
-                colliderNemico = collider;
-                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector3(0, 0.75f, 0) * force, ForceMode2D.Impulse);
-            }
-
-            if (collider.tag == "Mobile" && collider.gameObject != this.gameObject)
-            {
-                if (playerPos.x > collider.transform.position.x)
-                {
-                    collider.attachedRigidbody.AddForce(new Vector3(-1, 1, 0) * force, ForceMode2D.Impulse);
-                    collider.attachedRigidbody.AddTorque(10);
-                }
-                else
-                {
-                    collider.attachedRigidbody.AddForce(new Vector3(1, 1, 0) * force, ForceMode2D.Impulse);
-                    collider.attachedRigidbody.AddTorque(-10);
-                }
-            }
-        }
-
-        ColpoDiSpada(count, colliderNemico, playerPos);
-    }
-
-
-    public void UpAttack()
-    {
-        Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        int count = 0;
-
-        Collider2D[] swordStrike = Physics2D.OverlapBoxAll(UpswordAttPos.position, UpswordAttPos.localScale, Vector2.Angle(Vector2.zero, transform.position));
-        foreach (Collider2D collider in swordStrike)
-        {
-            if (collider.tag == "Scudo" && collider.gameObject != this.gameObject)
-            {
-                count++;
-            }
-            else if (collider.tag == "Enemies" && collider.gameObject != this.gameObject)
-            {
-                colliderNemico = collider;
-            }
-
-            if (collider.tag == "Mobile" && collider.gameObject != this.gameObject)
-            {
-                if (playerPos.x > collider.transform.position.x)
-                {
-                    collider.attachedRigidbody.AddForce(new Vector3(-1, 1, 0) * force, ForceMode2D.Impulse);
-                    collider.attachedRigidbody.AddTorque(10);
-                }
-                else
-                {
-                    collider.attachedRigidbody.AddForce(new Vector3(1, 1, 0) * force, ForceMode2D.Impulse);
-                    collider.attachedRigidbody.AddTorque(-10);
-                }
-            }
-        }
-
-        ColpoDiSpada(count, colliderNemico, playerPos);
-    }
-
-    public void Attack()
-    {
-        Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        int count = 0;
-
-        Collider2D[] swordStrike = Physics2D.OverlapBoxAll(swordAttPos.position, swordAttPos.localScale * attackRange, Vector2.Angle(Vector2.zero, transform.position));
-        foreach (Collider2D collider in swordStrike)
-        {
-            if(collider.tag == "Scudo" && collider.gameObject != this.gameObject)
-            {
-                count++;
-            }
-            else if (collider.tag == "Enemies" && collider.gameObject != this.gameObject)
-            {
-                colliderNemico = collider;
-            }
-
-            if (collider.tag == "Mobile" && collider.gameObject != this.gameObject)
-                    {
-                        if (playerPos.x > collider.transform.position.x)
-                        {
-                            collider.attachedRigidbody.AddForce(new Vector3(-1, 1, 0) * force, ForceMode2D.Impulse);
-                            collider.attachedRigidbody.AddTorque(10);
-                        }
-                        else
-                        {
-                            collider.attachedRigidbody.AddForce(new Vector3(1, 1, 0) * force, ForceMode2D.Impulse);
-                            collider.attachedRigidbody.AddTorque(-10);
-                        }
-                    }
-        }
-
-        if(colliderNemico != null)
-        {
-            ColpoDiSpada(count, colliderNemico, playerPos);
-            colliderNemico = null;
-        }
-       
-    }
-
-    public void CrouchAttack()
-    {
-        Vector2 playerPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        int count = 0;
-
-        Collider2D[] swordStrike = Physics2D.OverlapBoxAll(crouchAttPos.position, crouchAttPos.localScale * crouchAttackRange, Vector2.Angle(Vector2.zero, transform.position));
-        foreach (Collider2D collider in swordStrike)
-        {
-            if (collider.tag == "Scudo" && collider.gameObject != this.gameObject)
-            {
-                count++;
-            }
-            else if (collider.tag == "Enemies" && collider.gameObject != this.gameObject)
-            {
-                colliderNemico = collider;
-            }
-
-            if (collider.tag == "Mobile" && collider.gameObject != this.gameObject)
-            {
-                if (playerPos.x > collider.transform.position.x)
-                {
-                    collider.attachedRigidbody.AddForce(new Vector3(-1, 1, 0) * force, ForceMode2D.Impulse);
-                    collider.attachedRigidbody.AddTorque(10);
-                }
-                else
-                {
-                    collider.attachedRigidbody.AddForce(new Vector3(1, 1, 0) * force, ForceMode2D.Impulse);
-                    collider.attachedRigidbody.AddTorque(-10);
-                }
-            }
-        }
-
-        if (colliderNemico != null)
-        {
-            ColpoDiSpada(count, colliderNemico, playerPos);
-            colliderNemico = null;
-        }
-    }
-
-
-    public void ColpoDiSpada(int contatore, Collider2D oggetto, Vector2 p)
-    {
-        if (contatore == 0)
-        {
-            if(oggetto.GetComponentInParent<Enemy>() != null)
-            {
-                nemico = oggetto.GetComponentInParent<Enemy>();
-                nemico.healt -= attacco;
-                if (p.x > oggetto.transform.position.x)
-                {
-                    oggetto.attachedRigidbody.AddForce(new Vector3(-1.5f, 1, 0) * force, ForceMode2D.Impulse);
-                    oggetto.attachedRigidbody.AddTorque(10);
-                }
-                else
-                {
-                    oggetto.attachedRigidbody.AddForce(new Vector3(1.5f, 1, 0) * force, ForceMode2D.Impulse);
-                    oggetto.attachedRigidbody.AddTorque(-10);
-                }
-            }
-            else
-            {
-                if (p.x > oggetto.transform.position.x)
-                {
-                    oggetto.attachedRigidbody.AddForce(new Vector3(-1.5f, 1, 0) * force, ForceMode2D.Impulse);
-                    oggetto.attachedRigidbody.AddTorque(10);
-                }
-                else
-                {
-                    oggetto.attachedRigidbody.AddForce(new Vector3(1.5f, 1, 0) * force, ForceMode2D.Impulse);
-                    oggetto.attachedRigidbody.AddTorque(-10);
-                }
-            }
-        }
-        else
-        {
-            if (p.x > oggetto.transform.position.x)
-            {
-                oggetto.attachedRigidbody.AddForce(new Vector3(-1.5f, 0, 0) * force, ForceMode2D.Impulse);
-                oggetto.attachedRigidbody.AddTorque(10);
-            }
-            else
-            {
-                oggetto.attachedRigidbody.AddForce(new Vector3(1.5f, 0, 0) * force, ForceMode2D.Impulse);
-                oggetto.attachedRigidbody.AddTorque(-10);
-            }
-        }     
-    }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireCube(swordAttPos.position, swordAttPos.localScale);
-        Gizmos.DrawWireCube(crouchAttPos.position, crouchAttPos.localScale);
-        Gizmos.DrawWireCube(UpswordAttPos.position, UpswordAttPos.localScale);
-        Gizmos.DrawWireCube(DownswordAttPos.position, DownswordAttPos.localScale);
+        Gizmos.DrawWireCube(crouchAttPos.position, crouchAttPos.localScale);       
     }
 
 
     void AttaccoCompleto()
     {
         isAttacking = false;
+    }
+
+    void PlayerActions_Attack()
+    {
+        playerActions.Attack();
     }
 
     public InterfacciaInventario getIntInventario()

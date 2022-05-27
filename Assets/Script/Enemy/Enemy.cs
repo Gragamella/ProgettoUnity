@@ -27,16 +27,16 @@ public class Enemy : MonoBehaviour
     Transform morteSx;
 
     SpriteRenderer EnemySpriteRenderer;
-    
 
-    PolygonCollider2D enemyCollider;
+
+    BoxCollider2D enemyCollider;
     
 
     // Start is called before the first frame update
     void Start()
     {
         EnemySpriteRenderer = GetComponent<SpriteRenderer>();
-        enemyCollider = GetComponent<PolygonCollider2D>();
+        enemyCollider = GetComponent<BoxCollider2D>();
 
         head = gameObject.transform.GetChild(0).GetComponent<Transform>();
         chest = gameObject.transform.GetChild(1).GetComponent<Transform>();

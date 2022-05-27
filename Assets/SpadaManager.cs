@@ -20,6 +20,10 @@ public class SpadaManager : MonoBehaviour
 
         dictSpadaAnim.Add("idle", "spada_Idle");
         dictSpadaAnim.Add("walking", "spada_walking");
+        dictSpadaAnim.Add("crouch", "spada_crouch");
+        dictSpadaAnim.Add("air", "spada_air");
+        dictSpadaAnim.Add("attack", "spada_attack");
+        dictSpadaAnim.Add("crouch_attack", "spada_crouch_attack");
 
         sprite = null;
     }
