@@ -32,6 +32,27 @@ TextureImporter:
   - first:
       213: -7975068088358539892
     second: NES - Zelda 2 The Adventure of Link - Island Palace_9
+  - first:
+      213: -8326678468011579888
+    second: NES - Zelda 2 The Adventure of Link - Island Palace_10
+  - first:
+      213: 88960274651060890
+    second: NES - Zelda 2 The Adventure of Link - Island Palace_11
+  - first:
+      213: -4624893404722510573
+    second: NES - Zelda 2 The Adventure of Link - Island Palace_12
+  - first:
+      213: -3114990684389645099
+    second: NES - Zelda 2 The Adventure of Link - Island Palace_13
+  - first:
+      213: -6055294027828309964
+    second: NES - Zelda 2 The Adventure of Link - Island Palace_14
+  - first:
+      213: 912806141146726642
+    second: NES - Zelda 2 The Adventure of Link - Island Palace_15
+  - first:
+      213: -8756302503599619414
+    second: NES - Zelda 2 The Adventure of Link - Island Palace_16
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -53,6 +74,7 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -61,12 +83,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -84,9 +106,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 1
   platformSettings:
   - serializedVersion: 3
@@ -169,48 +194,6 @@ TextureImporter:
       bones: []
       spriteID: 4d5ed438f905b3f44b4fe650540173a3
       internalID: 1706765689969356371
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NES - Zelda 2 The Adventure of Link - Island Palace_1
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 451
-        width: 31
-        height: 177
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 155a6815c7f202b44a1a5e5c75b017f8
-      internalID: -5709296751374458387
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NES - Zelda 2 The Adventure of Link - Island Palace_2
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 499
-        width: 80
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 942de261dd6c97a4dbfd3ba652dbf31b
-      internalID: -5653621706917231020
       vertices: []
       indices: 
       edges: []
@@ -327,7 +310,7 @@ TextureImporter:
         x: 4100
         y: 209
         width: 1024
-        height: 419
+        height: 243
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -350,7 +333,7 @@ TextureImporter:
         width: 1025
         height: 211
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 3}
       outline: []
       physicsShape: []
@@ -358,6 +341,195 @@ TextureImporter:
       bones: []
       spriteID: c8de5ddc3ddd25190800000000000000
       internalID: -7975068088358539892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NES - Zelda 2 The Adventure of Link - Island Palace_10
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 628
+        width: 1024
+        height: 208
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 016a64bcc02b17c80800000000000000
+      internalID: -8326678468011579888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NES - Zelda 2 The Adventure of Link - Island Palace_1
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 420
+        width: 1024
+        height: 208
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de1a8019ad084c0b0800000000000000
+      internalID: -5709296751374458387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NES - Zelda 2 The Adventure of Link - Island Palace_2
+      rect:
+        serializedVersion: 2
+        x: 5126
+        y: 210
+        width: 1025
+        height: 209
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 456c2c0030d4a81b0800000000000000
+      internalID: -5653621706917231020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NES - Zelda 2 The Adventure of Link - Island Palace_11
+      rect:
+        serializedVersion: 2
+        x: 6152
+        y: 210
+        width: 1020
+        height: 208
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9a92b106ec0c3100800000000000000
+      internalID: 88960274651060890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NES - Zelda 2 The Adventure of Link - Island Palace_12
+      rect:
+        serializedVersion: 2
+        x: 4101
+        y: 1
+        width: 1024
+        height: 207
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 315c77fb3f311dfb0800000000000000
+      internalID: -4624893404722510573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NES - Zelda 2 The Adventure of Link - Island Palace_13
+      rect:
+        serializedVersion: 2
+        x: 5126
+        y: 2
+        width: 1024
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d4ed4af97455c4d0800000000000000
+      internalID: -3114990684389645099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NES - Zelda 2 The Adventure of Link - Island Palace_14
+      rect:
+        serializedVersion: 2
+        x: 5127
+        y: 420
+        width: 1023
+        height: 207
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 430dfbcf92647fba0800000000000000
+      internalID: -6055294027828309964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NES - Zelda 2 The Adventure of Link - Island Palace_15
+      rect:
+        serializedVersion: 2
+        x: 2050
+        y: 420
+        width: 1025
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f088df5950faac00800000000000000
+      internalID: 912806141146726642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NES - Zelda 2 The Adventure of Link - Island Palace_16
+      rect:
+        serializedVersion: 2
+        x: 2051
+        y: 211
+        width: 1023
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa2c41f044d5b7680800000000000000
+      internalID: -8756302503599619414
       vertices: []
       indices: 
       edges: []
