@@ -60,7 +60,6 @@ public class Player : MonoBehaviour
     string PLAYER_AIR = "Player_air";
     string PLAYER_ATTACK = "Player_attack";
     string PLAYER_CROUCH_ATTACK = "Player_crouch_attack";
-    string PLAYER_AIR_ATTACK = "Player_air_attack";
 
     public Inventory inventario;
 
