@@ -44,6 +44,7 @@ public class Player : MonoBehaviour
     private string currentAnimation;
 
     public bool down = false;
+    public bool isWalking = false;
 
     public Transform swordAttPos;  
     public Transform crouchAttPos;
@@ -206,6 +207,7 @@ public class Player : MonoBehaviour
         {
             if (xAxis != 0)
             {
+                isWalking = true;
                 CambiaStatoAnimazione(PLAYER_WALKING);
                 if (arma != null)
                 {
@@ -214,6 +216,7 @@ public class Player : MonoBehaviour
             }
             else
             {
+                isWalking = false;
                 CambiaStatoAnimazione(PLAYER_IDLE);
                 if(arma != null)
                 {
@@ -222,6 +225,7 @@ public class Player : MonoBehaviour
                
             }
         }
+
 
         //CROUCH
                
