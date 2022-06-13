@@ -6,8 +6,12 @@ public class Player : MonoBehaviour
 {
 
     public GameObject arma;
+    public GameObject corazza;
+    public GameObject gambali;
+    public GameObject bracciali;
 
     public SpadaManager spadaManagerSlot;
+    public EquipManager equipManager;
     private PlayerActions playerActions;
 
     private Dictionary<string, string> dictWeaponAnim;
@@ -102,6 +106,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         spadaManagerSlot = GetComponentInChildren<SpadaManager>();
+        equipManager = GetComponentInChildren<EquipManager>();
         spadaAnim = spadaManagerSlot.gameObject.GetComponent<Animator>();
         inventario = new Inventory();
         interfacciaInventario.SetInventario(inventario);
@@ -165,7 +170,43 @@ public class Player : MonoBehaviour
             {
                 spadaManagerSlot.gameObject.GetComponent<SpriteRenderer>().sprite = arma.GetComponent<Spada>().Image;
             }
-        }      
+        }
+
+        if (corazza != null)
+        {          
+
+            if (corazza.GetComponent<Equip>().image != null && equipManager.corazza.gameObject.GetComponent<SpriteRenderer>().sprite != corazza.GetComponent<Equip>().image)
+            {
+                equipManager.corazza.gameObject.GetComponent<SpriteRenderer>().sprite = corazza.GetComponent<Equip>().image;
+                equipManager.animationsCorazza["equip_idle"] = corazza.GetComponent<Equip>().equipAnimations["equip_idle"];
+                equipManager.animationsCorazza["equip_walk"] = corazza.GetComponent<Equip>().equipAnimations["equip_walk"];
+
+            }
+        }
+
+        if (gambali != null)
+        {  
+
+            if (gambali.GetComponent<Equip>().image != null && equipManager.gambali.gameObject.GetComponent<SpriteRenderer>().sprite != gambali.GetComponent<Equip>().image)
+            {
+                equipManager.gambali.gameObject.GetComponent<SpriteRenderer>().sprite = gambali.GetComponent<Equip>().image;
+                equipManager.animationsGambali["equip_idle"] = gambali.GetComponent<Equip>().equipAnimations["equip_idle"];
+                equipManager.animationsGambali["equip_walk"] = gambali.GetComponent<Equip>().equipAnimations["equip_walk"];
+            }
+        }
+
+        if (bracciali != null)
+        {
+
+            if (bracciali.GetComponent<Equip>().image != null && equipManager.bracciali.gameObject.GetComponent<SpriteRenderer>().sprite != bracciali.GetComponent<Equip>().image)
+            {
+                equipManager.bracciali.gameObject.GetComponent<SpriteRenderer>().sprite = bracciali.GetComponent<Equip>().image;
+                equipManager.animationsBracciali["equip_idle"] = bracciali.GetComponent<Equip>().equipAnimations["equip_idle"];
+                equipManager.animationsBracciali["equip_walk"] = bracciali.GetComponent<Equip>().equipAnimations["equip_walk"];
+            }
+        }
+
+
 
         //GROUNDED
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.2f, groundMask);

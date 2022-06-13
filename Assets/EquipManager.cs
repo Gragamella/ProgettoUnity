@@ -5,25 +5,33 @@ using UnityEngine;
 public class EquipManager : MonoBehaviour
 {
     Player player;
-    GameObject corazza;
-    GameObject elmo;
-    GameObject gambali;
-    GameObject bracciali;
+    public GameObject corazza;
+    public GameObject elmo;
+    public GameObject gambali;
+    public GameObject bracciali;
 
-    Dictionary<string, string> animations;
+    public Dictionary<string, string> animationsGambali;
+    public Dictionary<string, string> animationsBracciali;
+    public Dictionary<string, string> animationsCorazza;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponentInParent<Player>();
         corazza = gameObject.transform.GetChild(2).gameObject;
-        elmo = gameObject.transform.GetChild(2).gameObject;
+      //  elmo = gameObject.transform.GetChild(2).gameObject;
         gambali = gameObject.transform.GetChild(3).gameObject;
         bracciali = gameObject.transform.GetChild(4).gameObject;
 
-        animations = new Dictionary<string, string>();
-        animations.Add("idle", "red-temple-gambali-idle");
-        animations.Add("walking", "red-temple-gambali-walking");
+        animationsGambali = new Dictionary<string, string>();
+        animationsBracciali = new Dictionary<string, string>();
+        animationsCorazza = new Dictionary<string, string>();
+        animationsGambali.Add("equip_idle", "");
+        animationsGambali.Add("equip_walk", "");
+        animationsCorazza.Add("equip_idle", "");
+        animationsCorazza.Add("equip_walk", "");
+        animationsBracciali.Add("equip_idle", "");
+        animationsBracciali.Add("equip_walk", "");
         //animations.Add("","");
         //animations.Add("","");
         //animations.Add("","");
@@ -36,11 +44,22 @@ public class EquipManager : MonoBehaviour
     {
         if (player.isWalking)
         {
-            gambali.GetComponent<Animator>().Play(animations["walking"]);
+            if(player.corazza != null)
+                corazza.GetComponent<Animator>().Play(animationsCorazza["equip_walk"]);
+            if (player.gambali != null)
+                gambali.GetComponent<Animator>().Play(animationsGambali["equip_walk"]);
+            if (player.bracciali != null)
+                bracciali.GetComponent<Animator>().Play(animationsBracciali["equip_walk"]);
+            
         }
         else
         {
-            gambali.GetComponent<Animator>().Play(animations["idle"]);
+            if (player.corazza != null)
+                corazza.GetComponent<Animator>().Play(animationsCorazza["equip_idle"]);
+            if (player.gambali != null)
+                gambali.GetComponent<Animator>().Play(animationsGambali["equip_idle"]);
+            if (player.bracciali != null)
+                bracciali.GetComponent<Animator>().Play(animationsBracciali["equip_idle"]);
         }
     }
 }
