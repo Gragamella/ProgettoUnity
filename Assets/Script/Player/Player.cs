@@ -39,16 +39,17 @@ public class Player : MonoBehaviour
     private float xAxis;
     private float yAxis;
     private bool isGrounded;
-    private bool isJump;
     private bool isJumpPressed;
     public bool isCrouch;
     private bool isCrouchPressed;
-    private bool isAttacking;
     private bool isAttackPressed;
     private string currentAnimation;
 
     public bool down = false;
     public bool isWalking = false;
+    public bool isCrouching = false;
+    public bool isJumping = false;
+    public bool isAttacking = false;
 
     public Transform swordAttPos;  
     public Transform crouchAttPos;
@@ -118,7 +119,7 @@ public class Player : MonoBehaviour
     {                 
         xAxis = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetKeyDown(KeyCode.Space) && !isJump)
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
         {
             isJumpPressed = true;
         }
@@ -180,6 +181,9 @@ public class Player : MonoBehaviour
                 equipManager.corazza.gameObject.GetComponent<SpriteRenderer>().sprite = corazza.GetComponent<Equip>().image;
                 equipManager.animationsCorazza["equip_idle"] = corazza.GetComponent<Equip>().equipAnimations["equip_idle"];
                 equipManager.animationsCorazza["equip_walk"] = corazza.GetComponent<Equip>().equipAnimations["equip_walk"];
+                equipManager.animationsCorazza["equip_crouch"] = corazza.GetComponent<Equip>().equipAnimations["equip_crouch"];
+                equipManager.animationsCorazza["equip_air"] = corazza.GetComponent<Equip>().equipAnimations["equip_air"];
+                equipManager.animationsCorazza["equip_attack"] = corazza.GetComponent<Equip>().equipAnimations["equip_attack"];
 
             }
         }
@@ -192,6 +196,9 @@ public class Player : MonoBehaviour
                 equipManager.gambali.gameObject.GetComponent<SpriteRenderer>().sprite = gambali.GetComponent<Equip>().image;
                 equipManager.animationsGambali["equip_idle"] = gambali.GetComponent<Equip>().equipAnimations["equip_idle"];
                 equipManager.animationsGambali["equip_walk"] = gambali.GetComponent<Equip>().equipAnimations["equip_walk"];
+                equipManager.animationsGambali["equip_crouch"] = gambali.GetComponent<Equip>().equipAnimations["equip_crouch"];
+                equipManager.animationsGambali["equip_air"] = gambali.GetComponent<Equip>().equipAnimations["equip_air"];
+                equipManager.animationsGambali["equip_attack"] = gambali.GetComponent<Equip>().equipAnimations["equip_attack"];
             }
         }
 
@@ -203,6 +210,9 @@ public class Player : MonoBehaviour
                 equipManager.bracciali.gameObject.GetComponent<SpriteRenderer>().sprite = bracciali.GetComponent<Equip>().image;
                 equipManager.animationsBracciali["equip_idle"] = bracciali.GetComponent<Equip>().equipAnimations["equip_idle"];
                 equipManager.animationsBracciali["equip_walk"] = bracciali.GetComponent<Equip>().equipAnimations["equip_walk"];
+                equipManager.animationsBracciali["equip_crouch"] = bracciali.GetComponent<Equip>().equipAnimations["equip_crouch"];
+                equipManager.animationsBracciali["equip_air"] = bracciali.GetComponent<Equip>().equipAnimations["equip_air"];
+                equipManager.animationsBracciali["equip_attack"] = bracciali.GetComponent<Equip>().equipAnimations["equip_attack"];
             }
         }
 
@@ -222,7 +232,13 @@ public class Player : MonoBehaviour
 
         if (isGrounded)
         {
-            isJump = false;
+            isJumping = false;
+        }
+        
+        if(!isGrounded)
+        {
+            isJumping = true;
+            isWalking = false;
         }
 
         //CALCOLO INPUT VELOCITA
@@ -270,14 +286,19 @@ public class Player : MonoBehaviour
 
         //CROUCH
                
-            if (isCrouch && !isAttacking)
-            {               
-                CambiaStatoAnimazione(PLAYER_CROUCH);
-                vel.x = 0;
-                 if (arma != null)
-                 {
-                     CambiaStatoAnimazioneBetter(dictWeaponAnim["crouch"]);
-                 }
+        if (isCrouch && !isAttacking)
+        {
+            isCrouching = true;
+            CambiaStatoAnimazione(PLAYER_CROUCH);
+            vel.x = 0;
+             if (arma != null)
+             {
+                 CambiaStatoAnimazioneBetter(dictWeaponAnim["crouch"]);
+             }
+        }
+        else
+        {
+            isCrouching = false;
         }
         
            
@@ -287,19 +308,26 @@ public class Player : MonoBehaviour
         {
             isJumpPressed = false;
 
-            if (!isJump)
+            if (!isJumping)
             {
-                isJump = true;
+                isJumping = true;              
                 rgb2DPlayer.AddForce(new Vector2(0, jumpForce));             
                 CambiaStatoAnimazione(PLAYER_AIR);
                 if (arma != null)
                 {
                     CambiaStatoAnimazioneBetter(dictWeaponAnim["air"]);
                 }
-            }         
+            }
         }
 
-       
+        if (isJumping)
+        {
+            CambiaStatoAnimazione(PLAYER_AIR);
+        }
+        
+
+
+
 
 
         //ATTACCO
@@ -351,7 +379,7 @@ public class Player : MonoBehaviour
             vel.x = 0;
         }
 
-        if (isAttacking && !isJump)
+        if (isAttacking && !isJumping)
         {
             vel.x = 0;
         }

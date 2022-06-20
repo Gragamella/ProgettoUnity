@@ -26,12 +26,24 @@ public class EquipManager : MonoBehaviour
         animationsGambali = new Dictionary<string, string>();
         animationsBracciali = new Dictionary<string, string>();
         animationsCorazza = new Dictionary<string, string>();
+
         animationsGambali.Add("equip_idle", "");
         animationsGambali.Add("equip_walk", "");
+        animationsGambali.Add("equip_crouch", "");
+        animationsGambali.Add("equip_air", "");
+        animationsGambali.Add("equip_attack", "");
+
         animationsCorazza.Add("equip_idle", "");
         animationsCorazza.Add("equip_walk", "");
+        animationsCorazza.Add("equip_crouch", "");
+        animationsCorazza.Add("equip_air", "");
+
         animationsBracciali.Add("equip_idle", "");
         animationsBracciali.Add("equip_walk", "");
+        animationsBracciali.Add("equip_crouch", "");
+        animationsBracciali.Add("equip_air", "");
+
+
         //animations.Add("","");
         //animations.Add("","");
         //animations.Add("","");
@@ -42,6 +54,7 @@ public class EquipManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
         if (player.isWalking)
         {
             if(player.corazza != null)
@@ -51,6 +64,32 @@ public class EquipManager : MonoBehaviour
             if (player.bracciali != null)
                 bracciali.GetComponent<Animator>().Play(animationsBracciali["equip_walk"]);
             
+        }else if (player.isCrouching)
+        {
+            if (player.corazza != null)
+                corazza.GetComponent<Animator>().Play(animationsCorazza["equip_crouch"]);
+            if (player.gambali != null)
+                gambali.GetComponent<Animator>().Play(animationsGambali["equip_crouch"]);
+            if (player.bracciali != null)
+                bracciali.GetComponent<Animator>().Play(animationsBracciali["equip_crouch"]);
+
+        }else if (player.isJumping)
+        {
+            if (player.corazza != null)
+                corazza.GetComponent<Animator>().Play(animationsCorazza["equip_air"]);
+            if (player.gambali != null)
+                gambali.GetComponent<Animator>().Play(animationsGambali["equip_air"]);
+            if (player.bracciali != null)
+                bracciali.GetComponent<Animator>().Play(animationsBracciali["equip_air"]);
+
+        }else if (player.isAttacking)
+        {
+            if (player.corazza != null)
+                corazza.GetComponent<Animator>().Play(animationsCorazza["equip_attack"]);
+            if (player.gambali != null)
+                gambali.GetComponent<Animator>().Play(animationsGambali["equip_attack"]);
+            if (player.bracciali != null)
+                bracciali.GetComponent<Animator>().Play(animationsBracciali["equip_attack"]);
         }
         else
         {

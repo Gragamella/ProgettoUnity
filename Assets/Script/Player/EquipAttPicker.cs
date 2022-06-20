@@ -26,7 +26,10 @@ public class EquipAttPicker : MonoBehaviour
                 equip.image = equip.atlas.GetSprite(equipObj.name);
                 equip.equipAnimations["equip_idle"] = "red-temple-corazza-Idle";
                 equip.equipAnimations["equip_walk"] = "red-temple-corazza";
-                //equip.equipAnimations["equip_attack"] = "red-temple-Attack";
+                equip.equipAnimations["equip_crouch"] = "red-temple-corazza-crouch";
+                equip.equipAnimations["equip_air"] = "red-temple-corazza-air";
+                equip.equipAnimations["equip_attack"] = "red-temple-corazza-attack";
+               
                 equip.forza = 2;
                 equip.costituzione = 3;
                 equip.destrezza = 3;
@@ -38,7 +41,10 @@ public class EquipAttPicker : MonoBehaviour
                 equip.image = equip.atlas.GetSprite(equipObj.name);
                 equip.equipAnimations["equip_idle"] = "red-temple-bracciali-idle";
                 equip.equipAnimations["equip_walk"] = "red-temple-bracciali-walking";
-                //equip.equipAnimations["equip_attack"] = "red-temple-Attack";
+                equip.equipAnimations["equip_crouch"] = "red-temple-bracciali-crouch";
+                equip.equipAnimations["equip_air"] = "red-temple-bracciali-air";
+                equip.equipAnimations["equip_attack"] = "red-temple-bracciali-attack";
+               
                 equip.forza = 2;
                 equip.costituzione = 3;
                 equip.destrezza = 3;
@@ -50,7 +56,10 @@ public class EquipAttPicker : MonoBehaviour
                 equip.image = equip.atlas.GetSprite(equipObj.name);
                 equip.equipAnimations["equip_idle"] = "red-temple-gambali-idle";
                 equip.equipAnimations["equip_walk"] = "red-temple-gambali-walking";
-                //equip.equipAnimations["equip_attack"] = "red-temple-Attack";
+                equip.equipAnimations["equip_crouch"] = "red-temple-gambali-crouch";
+                equip.equipAnimations["equip_air"] = "red-temple-gambali-air";
+                equip.equipAnimations["equip_attack"] = "red-temple-gambali-attack";
+              
                 equip.forza = 2;
                 equip.costituzione = 3;
                 equip.destrezza = 3;
