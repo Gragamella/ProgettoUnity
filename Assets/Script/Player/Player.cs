@@ -50,6 +50,23 @@ public class Player : MonoBehaviour
     public bool isCrouching = false;
     public bool isJumping = false;
     public bool isAttacking = false;
+    public bool isCrouchAttacking = false;
+    public bool isFalling = false;
+    public bool isIdle = false;
+
+    public enum PlayerState
+    {
+        Idle,
+        Walking,
+        Attack,
+        Jump,
+        Crouch,
+        CrouchAttack,
+        Falling,
+        Empty,
+    }
+
+    public PlayerState state;
 
     public Transform swordAttPos;  
     public Transform crouchAttPos;
@@ -77,6 +94,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        state = PlayerState.Idle;
+
         dictWeaponAnim = spadaManagerSlot.dictSpadaAnim;
 
         if (gameObject.GetComponent<Collider2D>().isTrigger)
@@ -117,32 +136,71 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {                 
-        xAxis = Input.GetAxisRaw("Horizontal");
+        xAxis = Input.GetAxisRaw("Horizontal");      
 
-        if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
+        //GROUNDED
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.2f, groundMask);
+
+        if (hit.collider != null)
         {
-            isJumpPressed = true;
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
         }
 
-        if (Input.GetKeyDown("k"))
+        if (!isGrounded)
         {
-            isAttackPressed = true;
+            state = PlayerState.Falling;
+        }
+      
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            state = PlayerState.Jump;
+        }
+
+        if (Input.GetKeyDown("k") && state != PlayerState.Attack)
+        {
+            if (state == PlayerState.Crouch)
+            {
+                state = PlayerState.CrouchAttack;
+            }
+            else
+            {
+                state = PlayerState.Attack;
+            }           
+        }
+
+       
+
+        if (isGrounded && state != PlayerState.Attack && state != PlayerState.Jump && state != PlayerState.CrouchAttack && state != PlayerState.Crouch)
+        {
+            if (xAxis != 0)
+            {
+                state = PlayerState.Walking;
+            }
+            else
+            {
+               if(!isAttacking && !isCrouchAttacking)
+                {
+                    state = PlayerState.Idle;
+                }                                         
+            }
         }
 
         if (Input.GetKeyDown("s"))
         {
-            if (isGrounded)
+            if (isGrounded && !isAttacking)
             {
-                isCrouch = true;
+                state = PlayerState.Crouch;
             }
         }
-        else if (Input.GetKeyUp("s"))
+        else if (Input.GetKeyUp("s") && !isAttacking && !isCrouchAttacking)
         {
-            if (isGrounded)
-            {
-                isCrouch = false;
-            }
-        }       
+            state = PlayerState.Empty;
+        }
 
 
         if (Input.GetKeyDown("i"))
@@ -163,10 +221,140 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+      
+        //ANIMAZIONI EQUIP
+        EquipAnimationSelect();
+
+        //CALCOLO INPUT VELOCITA
+        Vector2 vel = MovementSpeedCalc();
+
+        //WALKING
+        if (state == PlayerState.Walking)
+        {
+            CambiaStatoAnimazione(PLAYER_WALKING);
+            if (arma != null)
+            {
+                CambiaStatoAnimazioneBetter(dictWeaponAnim["walking"]);
+            }
+        }
+
+        //IDLE
+        if (state == PlayerState.Idle)
+        {
+            CambiaStatoAnimazione(PLAYER_IDLE);
+            if (arma != null)
+            {
+                CambiaStatoAnimazioneBetter(dictWeaponAnim["idle"]);
+            }
+        }
+
+
+        //CROUCH
+               
+        if (state == PlayerState.Crouch)
+        {      
+            CambiaStatoAnimazione(PLAYER_CROUCH);
+            vel.x = 0;
+             if (arma != null)
+             {
+                 CambiaStatoAnimazioneBetter(dictWeaponAnim["crouch"]);
+             }
+        }
+        
+
+
+
+        //SALTO        
+        
+        if (state == PlayerState.Jump)
+        {
+            rgb2DPlayer.AddForce(new Vector2(0, jumpForce));
+            CambiaStatoAnimazione(PLAYER_AIR);
+            if (arma != null)
+            {
+                CambiaStatoAnimazioneBetter(dictWeaponAnim["air"]);
+            }
+            state = PlayerState.Empty;
+        }
+
+
+        //FALLING
+        if (state == PlayerState.Falling)
+        {
+            CambiaStatoAnimazione(PLAYER_AIR);
+            if (arma != null)
+            {
+                CambiaStatoAnimazioneBetter(dictWeaponAnim["air"]);
+            }
+        }
+        
+        //ATTACCO
+        if (state == PlayerState.Attack && !isAttacking)
+        {                                    
+                if (isGrounded)
+                {
+                                        
+                    CambiaStatoAnimazione(PLAYER_ATTACK);
+                    if (arma != null)
+                    {
+                        CambiaStatoAnimazioneBetter(dictWeaponAnim["attack"]);                          
+                    }
+                    Invoke("PlayerActions_Attack", 0.4f);
+                                      
+                }
+                else
+                {
+                   
+                    CambiaStatoAnimazione(PLAYER_ATTACK);
+                    if (arma != null)
+                    {
+                        CambiaStatoAnimazioneBetter(dictWeaponAnim["attack"]);                        
+                    }
+                    Invoke("PlayerActions_Attack", 0.4f);                  
+                }
+            isAttacking = true;
+            Invoke("AttaccoCompleto", 1f);
+            
+        }
+
+        //CROUCH-ATTACCO
+        if (state == PlayerState.CrouchAttack && !isCrouchAttacking)
+        {
+                                                
+           CambiaStatoAnimazione(PLAYER_CROUCH_ATTACK);
+           if (arma != null)
+           {
+               CambiaStatoAnimazioneBetter(dictWeaponAnim["crouch_attack"]);
+           }
+           Invoke("PlayerActions_Attack", 0.4f);
+
+           isCrouchAttacking = true;                                   
+           Invoke("AttaccoCompletoCrouch", 1f);
+        }
+        
+
+        if (state == PlayerState.Attack || state == PlayerState.CrouchAttack || state == PlayerState.Crouch)
+        {           
+            vel.x = 0;
+        }
+
+      
+        rgb2DPlayer.velocity = vel;
+
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireCube(swordAttPos.position, swordAttPos.localScale);
+        Gizmos.DrawWireCube(crouchAttPos.position, crouchAttPos.localScale);       
+    }
+
+    void EquipAnimationSelect()
+    {
         if (arma != null)
         {
             attacco = forza * 2 + arma.GetComponent<Spada>().attPowerCalcolato;
-            
+
             if (arma.GetComponent<Spada>().Image != null && spadaManagerSlot.gameObject.GetComponent<SpriteRenderer>().sprite != arma.GetComponent<Spada>().Image)
             {
                 spadaManagerSlot.gameObject.GetComponent<SpriteRenderer>().sprite = arma.GetComponent<Spada>().Image;
@@ -174,7 +362,7 @@ public class Player : MonoBehaviour
         }
 
         if (corazza != null)
-        {          
+        {
 
             if (corazza.GetComponent<Equip>().image != null && equipManager.corazza.gameObject.GetComponent<SpriteRenderer>().sprite != corazza.GetComponent<Equip>().image)
             {
@@ -184,12 +372,14 @@ public class Player : MonoBehaviour
                 equipManager.animationsCorazza["equip_crouch"] = corazza.GetComponent<Equip>().equipAnimations["equip_crouch"];
                 equipManager.animationsCorazza["equip_air"] = corazza.GetComponent<Equip>().equipAnimations["equip_air"];
                 equipManager.animationsCorazza["equip_attack"] = corazza.GetComponent<Equip>().equipAnimations["equip_attack"];
+                equipManager.animationsCorazza["equip_crouch_attack"] = corazza.GetComponent<Equip>().equipAnimations["equip_crouch_attack"];
+
 
             }
         }
 
         if (gambali != null)
-        {  
+        {
 
             if (gambali.GetComponent<Equip>().image != null && equipManager.gambali.gameObject.GetComponent<SpriteRenderer>().sprite != gambali.GetComponent<Equip>().image)
             {
@@ -199,6 +389,7 @@ public class Player : MonoBehaviour
                 equipManager.animationsGambali["equip_crouch"] = gambali.GetComponent<Equip>().equipAnimations["equip_crouch"];
                 equipManager.animationsGambali["equip_air"] = gambali.GetComponent<Equip>().equipAnimations["equip_air"];
                 equipManager.animationsGambali["equip_attack"] = gambali.GetComponent<Equip>().equipAnimations["equip_attack"];
+                equipManager.animationsGambali["equip_crouch_attack"] = gambali.GetComponent<Equip>().equipAnimations["equip_crouch_attack"];
             }
         }
 
@@ -213,43 +404,21 @@ public class Player : MonoBehaviour
                 equipManager.animationsBracciali["equip_crouch"] = bracciali.GetComponent<Equip>().equipAnimations["equip_crouch"];
                 equipManager.animationsBracciali["equip_air"] = bracciali.GetComponent<Equip>().equipAnimations["equip_air"];
                 equipManager.animationsBracciali["equip_attack"] = bracciali.GetComponent<Equip>().equipAnimations["equip_attack"];
+                equipManager.animationsBracciali["equip_crouch_attack"] = bracciali.GetComponent<Equip>().equipAnimations["equip_crouch_attack"];
             }
         }
+    }
 
-
-
-        //GROUNDED
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.2f, groundMask);
-
-        if (hit.collider != null)
-        {
-            isGrounded = true;
-        }
-        else
-        {
-            isGrounded = false;
-        }
-
-        if (isGrounded)
-        {
-            isJumping = false;
-        }
-        
-        if(!isGrounded)
-        {
-            isJumping = true;
-            isWalking = false;
-        }
-
-        //CALCOLO INPUT VELOCITA
-        Vector2 vel = new Vector2(0, rgb2DPlayer.velocity.y);
+    Vector2 MovementSpeedCalc()
+    {
+       Vector2 vel =  new Vector2(0, rgb2DPlayer.velocity.y);
 
         if (xAxis < 0)
         {
             vel.x = -velocita;
             transform.localScale = new Vector2(-1, 1);
         }
-        else if(xAxis > 0)
+        else if (xAxis > 0)
         {
             vel.x = velocita;
             transform.localScale = new Vector2(1, 1);
@@ -259,146 +428,20 @@ public class Player : MonoBehaviour
             vel.x = 0;
         }
 
-        //IDLE-MOVING
-        if (isGrounded && !isAttacking && !isCrouch)
-        {
-            if (xAxis != 0)
-            {
-                isWalking = true;
-                CambiaStatoAnimazione(PLAYER_WALKING);
-                if (arma != null)
-                {
-                    CambiaStatoAnimazioneBetter(dictWeaponAnim["walking"]);
-                }
-            }
-            else
-            {
-                isWalking = false;
-                CambiaStatoAnimazione(PLAYER_IDLE);
-                if(arma != null)
-                {
-                    CambiaStatoAnimazioneBetter(dictWeaponAnim["idle"]);
-                }
-               
-            }
-        }
-
-
-        //CROUCH
-               
-        if (isCrouch && !isAttacking)
-        {
-            isCrouching = true;
-            CambiaStatoAnimazione(PLAYER_CROUCH);
-            vel.x = 0;
-             if (arma != null)
-             {
-                 CambiaStatoAnimazioneBetter(dictWeaponAnim["crouch"]);
-             }
-        }
-        else
-        {
-            isCrouching = false;
-        }
-        
-           
-
-        //SALTO
-        if(isJumpPressed && isGrounded)
-        {
-            isJumpPressed = false;
-
-            if (!isJumping)
-            {
-                isJumping = true;              
-                rgb2DPlayer.AddForce(new Vector2(0, jumpForce));             
-                CambiaStatoAnimazione(PLAYER_AIR);
-                if (arma != null)
-                {
-                    CambiaStatoAnimazioneBetter(dictWeaponAnim["air"]);
-                }
-            }
-        }
-
-        if (isJumping)
-        {
-            CambiaStatoAnimazione(PLAYER_AIR);
-        }
-        
-
-
-
-
-
-        //ATTACCO
-        if (isAttackPressed)
-        {           
-            isAttackPressed = false;
-
-            if (!isAttacking)
-            {
-                isAttacking = true;
-
-                if (isGrounded)
-                {
-                    if (isCrouch)
-                    {
-                        CambiaStatoAnimazione(PLAYER_CROUCH_ATTACK);
-                        if (arma != null)
-                        {
-                            CambiaStatoAnimazioneBetter(dictWeaponAnim["crouch_attack"]);                          
-                        }
-                        Invoke("PlayerActions_Attack", 0.4f);
-                    }                  
-                    else
-                    {
-                        CambiaStatoAnimazione(PLAYER_ATTACK);
-                        if (arma != null)
-                        {
-                            CambiaStatoAnimazioneBetter(dictWeaponAnim["attack"]);                          
-                        }
-                        Invoke("PlayerActions_Attack", 0.4f);
-                    }
-
-                }
-                else
-                {
-                    CambiaStatoAnimazione(PLAYER_ATTACK);
-                    if (arma != null)
-                    {
-                        CambiaStatoAnimazioneBetter(dictWeaponAnim["attack"]);                        
-                    }
-                    Invoke("PlayerActions_Attack", 0.4f);                  
-                }
-                Invoke("AttaccoCompleto", 1f);
-            }
-        }
-
-        if (isCrouch && !isAttacking)
-        {           
-            vel.x = 0;
-        }
-
-        if (isAttacking && !isJumping)
-        {
-            vel.x = 0;
-        }
-
-
-        rgb2DPlayer.velocity = vel;
-
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireCube(swordAttPos.position, swordAttPos.localScale);
-        Gizmos.DrawWireCube(crouchAttPos.position, crouchAttPos.localScale);       
+        return vel;
     }
 
 
     void AttaccoCompleto()
     {
+        state = PlayerState.Empty;
         isAttacking = false;
+    }
+
+    void AttaccoCompletoCrouch()
+    {
+        state = PlayerState.Empty;
+        isCrouchAttacking = false;
     }
 
     void PlayerActions_Attack()

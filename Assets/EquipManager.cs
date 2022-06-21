@@ -32,16 +32,19 @@ public class EquipManager : MonoBehaviour
         animationsGambali.Add("equip_crouch", "");
         animationsGambali.Add("equip_air", "");
         animationsGambali.Add("equip_attack", "");
+        animationsGambali.Add("equip_crouch_attack", "");
 
         animationsCorazza.Add("equip_idle", "");
         animationsCorazza.Add("equip_walk", "");
         animationsCorazza.Add("equip_crouch", "");
         animationsCorazza.Add("equip_air", "");
+        animationsCorazza.Add("equip_crouch_attack", "");
 
         animationsBracciali.Add("equip_idle", "");
         animationsBracciali.Add("equip_walk", "");
         animationsBracciali.Add("equip_crouch", "");
         animationsBracciali.Add("equip_air", "");
+        animationsBracciali.Add("equip_crouch_attack", "");
 
 
         //animations.Add("","");
@@ -55,7 +58,7 @@ public class EquipManager : MonoBehaviour
     void Update()
     {
        
-        if (player.isWalking)
+        if (player.state == Player.PlayerState.Walking)
         {
             if(player.corazza != null)
                 corazza.GetComponent<Animator>().Play(animationsCorazza["equip_walk"]);
@@ -64,7 +67,7 @@ public class EquipManager : MonoBehaviour
             if (player.bracciali != null)
                 bracciali.GetComponent<Animator>().Play(animationsBracciali["equip_walk"]);
             
-        }else if (player.isCrouching)
+        }else if (player.state == Player.PlayerState.Crouch)
         {
             if (player.corazza != null)
                 corazza.GetComponent<Animator>().Play(animationsCorazza["equip_crouch"]);
@@ -73,7 +76,7 @@ public class EquipManager : MonoBehaviour
             if (player.bracciali != null)
                 bracciali.GetComponent<Animator>().Play(animationsBracciali["equip_crouch"]);
 
-        }else if (player.isJumping)
+        }else if (player.state == Player.PlayerState.Falling)
         {
             if (player.corazza != null)
                 corazza.GetComponent<Animator>().Play(animationsCorazza["equip_air"]);
@@ -82,7 +85,7 @@ public class EquipManager : MonoBehaviour
             if (player.bracciali != null)
                 bracciali.GetComponent<Animator>().Play(animationsBracciali["equip_air"]);
 
-        }else if (player.isAttacking)
+        }else if (player.state == Player.PlayerState.Attack)
         {
             if (player.corazza != null)
                 corazza.GetComponent<Animator>().Play(animationsCorazza["equip_attack"]);
@@ -90,6 +93,17 @@ public class EquipManager : MonoBehaviour
                 gambali.GetComponent<Animator>().Play(animationsGambali["equip_attack"]);
             if (player.bracciali != null)
                 bracciali.GetComponent<Animator>().Play(animationsBracciali["equip_attack"]);
+
+        }else if (player.state == Player.PlayerState.CrouchAttack)
+        {
+          
+            if (player.corazza != null)
+                corazza.GetComponent<Animator>().Play(animationsCorazza["equip_crouch_attack"]);
+            if (player.gambali != null)
+                gambali.GetComponent<Animator>().Play(animationsGambali["equip_crouch_attack"]);
+            if (player.bracciali != null)
+                bracciali.GetComponent<Animator>().Play(animationsBracciali["equip_crouch_attack"]);
+            
         }
         else
         {

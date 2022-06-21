@@ -29,7 +29,8 @@ public class EquipAttPicker : MonoBehaviour
                 equip.equipAnimations["equip_crouch"] = "red-temple-corazza-crouch";
                 equip.equipAnimations["equip_air"] = "red-temple-corazza-air";
                 equip.equipAnimations["equip_attack"] = "red-temple-corazza-attack";
-               
+                equip.equipAnimations["equip_crouch_attack"] = "red-temple-corazza-crouch-attack";
+
                 equip.forza = 2;
                 equip.costituzione = 3;
                 equip.destrezza = 3;
@@ -44,7 +45,8 @@ public class EquipAttPicker : MonoBehaviour
                 equip.equipAnimations["equip_crouch"] = "red-temple-bracciali-crouch";
                 equip.equipAnimations["equip_air"] = "red-temple-bracciali-air";
                 equip.equipAnimations["equip_attack"] = "red-temple-bracciali-attack";
-               
+                equip.equipAnimations["equip_crouch_attack"] = "red-temple-bracciali-crouch-attack";
+
                 equip.forza = 2;
                 equip.costituzione = 3;
                 equip.destrezza = 3;
@@ -59,7 +61,8 @@ public class EquipAttPicker : MonoBehaviour
                 equip.equipAnimations["equip_crouch"] = "red-temple-gambali-crouch";
                 equip.equipAnimations["equip_air"] = "red-temple-gambali-air";
                 equip.equipAnimations["equip_attack"] = "red-temple-gambali-attack";
-              
+                equip.equipAnimations["equip_crouch_attack"] = "red-temple-gambali-crouch-attack";
+
                 equip.forza = 2;
                 equip.costituzione = 3;
                 equip.destrezza = 3;

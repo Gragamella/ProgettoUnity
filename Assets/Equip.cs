@@ -36,6 +36,7 @@ public class Equip : MonoBehaviour
         equipAnimations.Add("equip_crouch", "");
         equipAnimations.Add("equip_air", "");
         equipAnimations.Add("equip_attack", "");
+        equipAnimations.Add("equip_crouch_attack", "");
         //equipAnimations.Add("equip_attack", "");
 
         attPicker = new EquipAttPicker(gameObject);
